@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from pydantic import field_validator
 from pydantic_settings import BaseSettings
@@ -29,7 +30,7 @@ class Settings(BaseSettings):
         "CORS_ALLOW_HEADERS",
         mode="before",
     )
-    def split_str_to_list(self: "Settings", v: str) -> list[str] | str:
+    def split_str_to_list(cls, v: Any) -> Any:  # typing: ignore  # noqa: N805
         if isinstance(v, str):
             return [item.strip() for item in v.split(",")]
         return v
@@ -37,6 +38,3 @@ class Settings(BaseSettings):
     class Config:
         env_file = os.environ.get("ENV_FILE", ".env.local")
         extra = "ignore"
-
-
-settings = Settings()  # type: ignore

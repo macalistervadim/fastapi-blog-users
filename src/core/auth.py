@@ -11,7 +11,7 @@ cookie_transport = CookieTransport(
     cookie_max_age=settings.COOKIE_MAX_AGE,
     cookie_secure=settings.COOKIE_SECURE,
     cookie_httponly=settings.COOKIE_HTTPONLY,
-    cookie_samesite=settings.COOKIE_SAMESITE.lower()  # type: ignore
+    cookie_samesite=settings.COOKIE_SAMESITE.lower(),  # type: ignore
 )
 
 
