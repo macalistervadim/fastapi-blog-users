@@ -8,4 +8,4 @@ from src.models.base import Base
 class User(SQLAlchemyBaseUserTable[int], Base):
     __table_args__ = {"extend_existing": True}
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)  # type: ignore

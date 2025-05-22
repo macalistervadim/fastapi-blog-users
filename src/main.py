@@ -1,35 +1,25 @@
 from fastapi import FastAPI
-from fastapi_users import FastAPIUsers
-from fastapi_users.authentication import (
-    AuthenticationBackend,
-    CookieTransport,
-    JWTStrategy,
-)
 
-from schemas.users import UserCreate, UserRead
-from src.api.v1 import users
-from src.models.users import User
-from src.utils.get_user_manager import get_user_manager
+from src.api.v1 import auth, users
+from src.core.auth import get_auth_backend
+from src.core.middleware import setup_middlewares
+from src.core.users import get_fastapi_users
 
 app = FastAPI()
 
+# middlewares
+setup_middlewares(app)
 
-cookie_transport = CookieTransport(cookie_name="biscuit", cookie_max_age=3600)
-auth_backend: AuthenticationBackend = AuthenticationBackend(
-    name="jwt",
-    transport=cookie_transport,
-    get_strategy=lambda: JWTStrategy(secret="SECRET", lifetime_seconds=3600),
-)
+# components
+fastapi_users = get_fastapi_users()
+auth_backend = get_auth_backend()
 
-fastapi_users = FastAPIUsers[User, int](
-    get_user_manager,
-    [auth_backend],
-)
-
+# routers
 app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
+    auth.get_auth_router(fastapi_users, auth_backend),
     prefix="/auth",
-    tags=["auth"],
 )
-
-app.include_router(users.router, prefix="/v1")
+app.include_router(
+    users.get_users_router(fastapi_users),
+    prefix="/users",
+)

@@ -24,5 +24,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, Any]:
         yield session
 
 
-async def get_user_db(session=Depends(get_db)):
-    yield SQLAlchemyUserDatabase(session, User)
+async def get_user_db(
+    session: AsyncSession = Depends(get_db),
+) -> SQLAlchemyUserDatabase:
+    return SQLAlchemyUserDatabase(session, User)
