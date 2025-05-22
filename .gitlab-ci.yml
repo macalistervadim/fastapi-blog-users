@@ -78,7 +78,6 @@ deploy:
           echo \"CORS_ALLOW_CREDENTIALS=$CORS_ALLOW_CREDENTIALS\" >> .env
           echo \"CORS_ALLOW_METHODS=$CORS_ALLOW_METHODS\" >> .env
           echo \"CORS_ALLOW_HEADERS=$CORS_ALLOW_HEADERS\" >> .env
-          export ENV_FILE=.env
           docker-compose -f docker-compose.prod.yml pull
           docker-compose -f docker-compose.prod.yml down
           docker-compose -f docker-compose.prod.yml up -d

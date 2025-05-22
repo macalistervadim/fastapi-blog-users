@@ -8,6 +8,7 @@ services:
       - ./alembic.ini:/app/alembic.ini
       - ./alembic:/app/alembic
     environment:
+      ENV_FILE: .env
       DATABASE_URL: ${DATABASE_URL}
     expose:
       - "8000"
