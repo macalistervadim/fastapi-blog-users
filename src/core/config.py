@@ -36,7 +36,7 @@ class Settings(BaseSettings):
         return v
 
     class Config:
-        env_file = os.environ.get("ENV_FILE", ".env.local")
+        env_file = os.environ.get("ENV_FILE", ".env")
         extra = "ignore"
 
 

@@ -74,7 +74,7 @@ deploy:
           echo \"COOKIE_SECURE=$COOKIE_SECURE\" >> .env
           echo \"COOKIE_HTTPONLY=$COOKIE_HTTPONLY\" >> .env
           echo \"COOKIE_SAMESITE=$COOKIE_SAMESITE\" >> .env
-          echo \"CORS_ORIGINS=$DATABASE_URL\" >> .env
+          echo \"CORS_ORIGINS=$CORS_ORIGINS\" >> .env
           echo \"CORS_ALLOW_CREDENTIALS=$CORS_ALLOW_CREDENTIALS\" >> .env
           echo \"CORS_ALLOW_METHODS=$CORS_ALLOW_METHODS\" >> .env
           echo \"CORS_ALLOW_HEADERS=$CORS_ALLOW_HEADERS\" >> .env
