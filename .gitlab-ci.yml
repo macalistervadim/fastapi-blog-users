@@ -4,7 +4,7 @@ stages:
   - deploy
 
 variables:
-  DOCKER_IMAGE: $DOCKER_USERNAME/fastapi-blog-user:$CI_COMMIT_SHORT_SHA
+  DOCKER_IMAGE: $DOCKER_USERNAME/fastapi-blog-users:$CI_COMMIT_SHORT_SHA
   POSTGRES_DB: test_db
   POSTGRES_USER: test_user
   POSTGRES_PASSWORD: test_password
@@ -53,21 +53,37 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    - apk add --no-cache openssh
+    - apk add --no-cache openssh git
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo "StrictHostKeyChecking no" >> ~/.ssh/config
   script:
-    - ssh $SSH_USER@$SSH_HOST "
-        cd ~/fastapi-app/fastapi-blog &&
-        git pull &&
-        export DOCKER_IMAGE=$DOCKER_IMAGE &&
-        export DATABASE_URL=$DATABASE_URL &&
-        docker-compose -f docker-compose.prod.yml pull &&
-        docker-compose -f docker-compose.prod.yml down &&
-        docker-compose -f docker-compose.prod.yml up -d
-      "
+    - |
+      ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" \
+        "bash -c '
+          set -e
+          cd ~/fastapi-app/fastapi-users
+          git pull
+          echo \"DOCKER_IMAGE=$DOCKER_IMAGE\" > .env
+          echo \"DATABASE_URL=$DATABASE_URL\" >> .env
+          echo \"USERS_SECRET_KEY=$USERS_SECRET_KEY\" >> .env
+          echo \"JWT_LIFETIME_SECONDS=$JWT_LIFETIME_SECONDS\" >> .env
+          echo \"COOKIE_NAME=$COOKIE_NAME\" >> .env
+          echo \"COOKIE_MAX_AGE=$COOKIE_MAX_AGE\" >> .env
+          echo \"COOKIE_SECURE=$COOKIE_SECURE\" >> .env
+          echo \"COOKIE_HTTPONLY=$COOKIE_HTTPONLY\" >> .env
+          echo \"COOKIE_SAMESITE=$COOKIE_SAMESITE\" >> .env
+          echo \"CORS_ORIGINS=$DATABASE_URL\" >> .env
+          echo \"CORS_ALLOW_CREDENTIALS=$CORS_ALLOW_CREDENTIALS\" >> .env
+          echo \"CORS_ALLOW_METHODS=$CORS_ALLOW_METHODS\" >> .env
+          echo \"CORS_ALLOW_HEADERS=$CORS_ALLOW_HEADERS\" >> .env
+          docker-compose -f docker-compose.prod.yml pull
+          docker-compose -f docker-compose.prod.yml down
+          docker-compose -f docker-compose.prod.yml up -d
+        '"
+
   only:
     - dev
     - prod
+

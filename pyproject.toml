@@ -15,6 +15,7 @@ dependencies = [
     "fastapi-users[sqlalchemy2]>=14.0.1",
     "fastapi[all]>=0.115.12",
     "sqlalchemy>=2.0.41",
+    "pytest>=8.3.5",
 ]
 
 [tool.setuptools.packages.find]
