@@ -41,7 +41,7 @@ test:
     POSTGRES_PASSWORD: test_password
     DATABASE_URL: postgresql://test_user:test_password@postgres:5432/test_db
   script:
-    - pytest --maxfail=1 --disable-warnings -q
+    - pytest
   only:
     - prod
     - dev
