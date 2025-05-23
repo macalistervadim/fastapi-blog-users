@@ -1,7 +1,5 @@
 import os
-from typing import Annotated
 
-from pydantic import PlainValidator
 from pydantic_settings import BaseSettings
 
 
@@ -19,31 +17,10 @@ class Settings(BaseSettings):
     COOKIE_SAMESITE: str = "lax"
 
     # cors
-    CORS_ORIGINS: Annotated[
-        list[str],
-        PlainValidator(
-            lambda v: [i.strip() for i in v.split(",")]
-            if isinstance(v, str)
-            else v,
-        ),
-    ]
+    CORS_ORIGINS: list[str]
     CORS_ALLOW_CREDENTIALS: bool = True
-    CORS_ALLOW_METHODS: Annotated[
-        list[str],
-        PlainValidator(
-            lambda v: [i.strip() for i in v.split(",")]
-            if isinstance(v, str)
-            else v,
-        ),
-    ] = ["*"]
-    CORS_ALLOW_HEADERS: Annotated[
-        list[str],
-        PlainValidator(
-            lambda v: [i.strip() for i in v.split(",")]
-            if isinstance(v, str)
-            else v,
-        ),
-    ] = ["*"]
+    CORS_ALLOW_METHODS: list[str]
+    CORS_ALLOW_HEADERS: list[str]
 
     class Config:
         env_file = os.environ.get("ENV_FILE", ".env")
