@@ -60,17 +60,17 @@ deploy:
     - echo "StrictHostKeyChecking no" >> ~/.ssh/config
   script:
     - |
-      ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" \
-        "bash -c '
-          set -e
-          cd ~/fastapi-app/fastapi-users
-          git pull
-          sed -i \"s|^DOCKER_IMAGE=.*|DOCKER_IMAGE=$DOCKER_IMAGE|\" .env
-          docker-compose -f docker-compose.prod.yml pull
-          docker-compose -f docker-compose.prod.yml down
-          docker-compose -f docker-compose.prod.yml up -d
-        '"
-
+      ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "DOCKER_IMAGE=$DOCKER_IMAGE bash -c '
+        set -e
+        cd ~/fastapi-app/fastapi-users
+        git pull
+        sed -i \"s|^DOCKER_IMAGE=.*|DOCKER_IMAGE=$DOCKER_IMAGE|\" .env
+        docker-compose -f docker-compose.prod.yml pull
+        docker-compose -f docker-compose.prod.yml down
+        docker-compose -f docker-compose.prod.yml up -d
+      '"
+  
+  
   only:
     - dev
     - prod
