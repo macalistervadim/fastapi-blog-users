@@ -1,7 +1,7 @@
 import os
-from typing import Any
+from typing import Annotated
 
-from pydantic import field_validator
+from pydantic import PlainValidator
 from pydantic_settings import BaseSettings
 
 
@@ -19,21 +19,31 @@ class Settings(BaseSettings):
     COOKIE_SAMESITE: str = "lax"
 
     # cors
-    CORS_ORIGINS: list[str] = ["http://localhost:8000", "http://localhost"]
+    CORS_ORIGINS: Annotated[
+        list[str],
+        PlainValidator(
+            lambda v: [i.strip() for i in v.split(",")]
+            if isinstance(v, str)
+            else v,
+        ),
+    ]
     CORS_ALLOW_CREDENTIALS: bool = True
-    CORS_ALLOW_METHODS: list[str] = ["*"]
-    CORS_ALLOW_HEADERS: list[str] = ["*"]
-
-    @field_validator(
-        "CORS_ORIGINS",
-        "CORS_ALLOW_METHODS",
-        "CORS_ALLOW_HEADERS",
-        mode="before",
-    )
-    def split_str_to_list(cls, v: Any) -> Any:  # typing: ignore  # noqa: N805
-        if isinstance(v, str):
-            return [item.strip() for item in v.split(",")]
-        return v
+    CORS_ALLOW_METHODS: Annotated[
+        list[str],
+        PlainValidator(
+            lambda v: [i.strip() for i in v.split(",")]
+            if isinstance(v, str)
+            else v,
+        ),
+    ] = ["*"]
+    CORS_ALLOW_HEADERS: Annotated[
+        list[str],
+        PlainValidator(
+            lambda v: [i.strip() for i in v.split(",")]
+            if isinstance(v, str)
+            else v,
+        ),
+    ] = ["*"]
 
     class Config:
         env_file = os.environ.get("ENV_FILE", ".env")
