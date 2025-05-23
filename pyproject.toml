@@ -16,7 +16,6 @@ dependencies = [
     "fastapi[all]>=0.115.12",
     "sqlalchemy>=2.0.41",
     "pytest>=8.3.5",
-    "psycopg2-binary>=2.9.10",
 ]
 
 [tool.setuptools.packages.find]
