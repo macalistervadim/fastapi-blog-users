@@ -66,18 +66,6 @@ deploy:
           cd ~/fastapi-app/fastapi-users
           git pull
           echo \"DOCKER_IMAGE=$DOCKER_IMAGE\" > .env
-          echo \"DATABASE_URL=$DATABASE_URL\" >> .env
-          echo \"USERS_SECRET_KEY=$USERS_SECRET_KEY\" >> .env
-          echo \"JWT_LIFETIME_SECONDS=$JWT_LIFETIME_SECONDS\" >> .env
-          echo \"COOKIE_NAME=$COOKIE_NAME\" >> .env
-          echo \"COOKIE_MAX_AGE=$COOKIE_MAX_AGE\" >> .env
-          echo \"COOKIE_SECURE=$COOKIE_SECURE\" >> .env
-          echo \"COOKIE_HTTPONLY=$COOKIE_HTTPONLY\" >> .env
-          echo \"COOKIE_SAMESITE=$COOKIE_SAMESITE\" >> .env
-          printf 'CORS_ORIGINS=%s\n' "$CORS_ORIGINS" >> .env
-          echo \"CORS_ALLOW_CREDENTIALS=$CORS_ALLOW_CREDENTIALS\" >> .env
-          printf 'CORS_ALLOW_METHODS=%s\n' "$CORS_ALLOW_METHODS" >> .env
-          printf 'CORS_ALLOW_HEADERS=%s\n' "$CORS_ALLOW_HEADERS" >> .env
           docker-compose -f docker-compose.prod.yml pull
           docker-compose -f docker-compose.prod.yml down
           docker-compose -f docker-compose.prod.yml up -d
