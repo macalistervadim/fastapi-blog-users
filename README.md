@@ -38,8 +38,8 @@
 
 1. **Клонирование репозитория:**
 ```bash
-git clone https://github.com/macalistervadim/fastapi-blog
-cd fastapi-blog
+git clone https://github.com/macalistervadim/fastapi-blog-users
+cd fastapi-blog-users
 ```
 
 2. **Настройка окружения:**
