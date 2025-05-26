@@ -9,7 +9,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "alembic>=1.15.2",
+    "asyncpg>=0.30.0",
+    "fastapi-users-db-sqlalchemy>=7.0.0",
+    "fastapi-users[sqlalchemy2]>=14.0.1",
     "fastapi[all]>=0.115.12",
+    "sqlalchemy>=2.0.41",
+    "pytest>=8.3.5",
 ]
 
 [tool.setuptools.packages.find]
